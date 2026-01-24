@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane fx:id="Panel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="423.0" prefWidth="311.0" style="-fx-border-color: #c5d9f1; -fx-border-width: 6; -fx-background-color: linear-gradient(to bottom, #fff9c4, #bbdefb); -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0.2, 0, 2);" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ChartController">
+   <children>
+      <Text layoutX="158.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <ImageView fitHeight="94.0" fitWidth="93.0" layoutX="24.0" layoutY="25.0">
+         <image>
+            <Image url="@icon.png" />
+         </image>
+      </ImageView>
+      <Text fill="#7099f2" layoutX="141.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #f9d423;" text="Panel menadżer" wrappingWidth="156.53675842285156">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
+      <ListView fx:id="listOfPanels" layoutX="12.0" layoutY="165.0" prefHeight="23.0" prefWidth="85.0" />
+      <DatePicker fx:id="fromDatePicker" layoutX="107.0" layoutY="164.0" prefHeight="25.0" prefWidth="93.0" />
+      <DatePicker fx:id="toDatePicker" layoutX="206.0" layoutY="164.0" prefHeight="25.0" prefWidth="93.0" />
+      <Text layoutX="60.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <Text layoutX="109.0" layoutY="158.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Od" />
+      <Text layoutX="206.0" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Do" />
+      <LineChart fx:id="lineChart" layoutX="1.0" layoutY="189.0" prefHeight="231.0" prefWidth="311.0">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" fx:id="xAxis" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis fx:id="yAxis" side="LEFT" />
+        </yAxis>
+      </LineChart>
+   </children>
+</Pane>

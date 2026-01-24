@@ -1,0 +1,23 @@
+.button.primary {
+    -fx-background-color: #64b5f6;
+    -fx-text-fill: #1e3a5f;
+    -fx-background-radius: 10;
+    -fx-background-insets: 0;
+}
+
+.button.primary:hover {
+    -fx-background-color: #42a5f5;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0.2, 0, 2);
+}
+.button.primary:pressed {
+    -fx-background-color: #1e88e5;
+    -fx-translate-y: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0.1, 0, 1);
+}
+.chart-area-fill {
+    -fx-fill: transparent;
+}
+.chart-series-line:hover {
+    -fx-stroke: #f9d423;
+    -fx-stroke-width: 3px;
+}

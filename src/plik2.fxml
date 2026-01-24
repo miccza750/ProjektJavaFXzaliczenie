@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane fx:id="Panel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="423.0" prefWidth="311.0" style="-fx-border-color: #c5d9f1; -fx-border-width: 6; -fx-background-color: linear-gradient(to bottom, #fff9c4, #bbdefb); -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0.2, 0, 2);" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Panels">
+    <children>
+        <Text layoutX="158.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+        <ImageView fitHeight="49.0" fitWidth="48.0" layoutX="24.0" layoutY="25.0">
+            <image>
+                <Image url="@icon.png" />
+            </image>
+        </ImageView>
+        <Text fill="#7099f2" layoutX="99.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #f9d423;" text="Panel menadżer" wrappingWidth="186.13673400878906">
+            <font>
+                <Font size="11.0" />
+            </font>
+        </Text>
+      <TableView fx:id="table" layoutX="16.0" layoutY="90.0" prefHeight="265.0" prefWidth="280.0">
+        <columns>
+          <TableColumn fx:id="IDColumn" prefWidth="24.800048828125" text="ID" />
+          <TableColumn fx:id="NazwaColumn" prefWidth="91.20000839233398" text="Nazwa" />
+            <TableColumn fx:id="DzienColumn" prefWidth="91.199951171875" text="Dzien_otwarcia" />
+            <TableColumn fx:id="WlaczonyColumn" prefWidth="70.40003967285156" text="Włączony" />
+        </columns>
+      </TableView>
+      <Button fx:id="DeleteButton" layoutX="137.0" layoutY="364.0" mnemonicParsing="false" prefHeight="6.0" prefWidth="59.0" text="Usuń" />
+      <Button fx:id="AddButton" layoutX="83.0" layoutY="364.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="48.0" text="Dodaj" />
+      <Button fx:id="OnOffButton" layoutX="206.0" layoutY="364.0" mnemonicParsing="false" text="Włącz/Wyłącz" />
+      <Button fx:id="RefreshButton" layoutX="12.0" layoutY="364.0" mnemonicParsing="false" text="Odświerz" />
+    </children>
+</Pane>
