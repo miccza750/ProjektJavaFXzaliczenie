@@ -37,7 +37,8 @@ public class ChartController {
                     }
 
                 }
-            }
+            }catch (SQLException ex) {
+                ex.printStackTrace();}
             listOfPanels.setItems(FXCollections.observableArrayList(panelFarmIds));
         } catch (SQLException e) {
             e.printStackTrace();

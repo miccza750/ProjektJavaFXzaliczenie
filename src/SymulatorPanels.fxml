@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane fx:id="Panel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="423.0" prefWidth="311.0" style="-fx-border-color: #c5d9f1; -fx-border-width: 6; -fx-background-color: linear-gradient(to bottom, #fff9c4, #bbdefb); -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0.2, 0, 2);" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SymulatorController">
+   <children>
+      <Text layoutX="158.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <ImageView fitHeight="94.0" fitWidth="93.0" layoutX="24.0" layoutY="25.0">
+         <image>
+            <Image url="@icon.png" />
+         </image>
+      </ImageView>
+      <Text fill="#7099f2" layoutX="141.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #f9d423;" text="Panel menadżer" wrappingWidth="156.53675842285156">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
+      <DatePicker layoutX="158.0" layoutY="151.0" prefHeight="25.0" prefWidth="120.0" />
+      <Text fill="#007bff" layoutX="24.0" layoutY="171.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wybierz dzień">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Text>
+      <ScrollPane layoutY="341.0" prefHeight="85.0" prefWidth="311.0">
+        <content>
+          <AnchorPane fx:id="ErrorDisplay" minHeight="0.0" minWidth="0.0" prefHeight="87.0" prefWidth="302.0">
+               <children>
+                  <TextArea fx:id="errorArea" prefHeight="85.0" prefWidth="311.0" />
+               </children></AnchorPane>
+        </content>
+      </ScrollPane>
+   </children>
+</Pane>

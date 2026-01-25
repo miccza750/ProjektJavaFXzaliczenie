@@ -2,19 +2,14 @@ import java.sql.*;
 import java.util.Random;
 
 public class DBConnect {
-    public static Connection getConnection() {
+    public static Connection getConnection() throws SQLException {
         Connection conn = null;
-        try {
-            String url = "jdbc:mysql://localhost:3306/" + "bazapanel" + "i?useSSL=false&serverTimezone=UTC";
-            String user = "root";
-            String password = "";
-            conn = DriverManager.getConnection(url, user, password);
-            System.out.println("Połączono z bazą danych");
-        } catch (
-                SQLException e) {
-            System.out.println("Błąd połączenia: " + e.getMessage());
-        }
-    return conn;
+        String url = "jdbc:mysql://localhost:3306/" + "bazapanel" + "i?useSSL=false&serverTimezone=UTC";
+        String user = "root";
+        String password = "";
+        conn = DriverManager.getConnection(url, user, password);
+        System.out.println("Połączono z bazą danych");
+        return conn;
     }
     public void getData(String tabela) {
         try {
