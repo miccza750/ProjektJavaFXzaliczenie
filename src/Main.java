@@ -14,7 +14,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("plik1.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LoginForm.fxml"));
         Scene scene = new Scene(fxmlLoader.load(),311,423);
         stage.setScene(scene);
         stage.setTitle("r");

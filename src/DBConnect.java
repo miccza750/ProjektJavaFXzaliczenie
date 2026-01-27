@@ -4,7 +4,7 @@ import java.util.Random;
 public class DBConnect {
     public static Connection getConnection() throws SQLException {
         Connection conn = null;
-        String url = "jdbc:mysql://localhost:3306/" + "bazapanel" + "i?useSSL=false&serverTimezone=UTC";
+        String url = "jdbc:mysql://localhost:3307/" + "solar_farm" + "i?useSSL=false&serverTimezone=UTC";
         String user = "root";
         String password = "";
         conn = DriverManager.getConnection(url, user, password);
