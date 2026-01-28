@@ -9,18 +9,18 @@ import javafx.stage.Stage;
 
 import java.sql.*;
 
-public class Panels extends Application {
+public class TablesController extends Application {
 
     @FXML
     private TableView<PanelRow> table;
     @FXML
     private TableColumn<PanelRow, Integer> IDColumn;
     @FXML
-    private TableColumn<PanelRow, String> NazwaColumn;
+    private TableColumn<PanelRow, Integer> IDFarmColumn;
     @FXML
-    private TableColumn<PanelRow, String> DzienColumn;
+    private TableColumn<PanelRow, String> DateColumn;
     @FXML
-    private TableColumn<PanelRow, String> WlaczonyColumn;
+    private TableColumn<PanelRow, String> TurnOnColumn;
     @FXML
     private Button DeleteButton;
     @FXML
@@ -43,12 +43,10 @@ public class Panels extends Application {
     @FXML
     public void initialize() throws SQLException, ClassNotFoundException {
         data = FXCollections.observableArrayList();
-
-        // Podłączenie kolumn do właściwości PanelRow
         IDColumn.setCellValueFactory(cell -> cell.getValue().getId().asObject());
-        NazwaColumn.setCellValueFactory(cell -> cell.getValue().getNazwa());
-        DzienColumn.setCellValueFactory(cell -> cell.getValue().getDzienOtwarcia());
-        WlaczonyColumn.setCellValueFactory(cell -> cell.getValue().getWlaczony());
+        IDFarmColumn.setCellValueFactory(cell -> cell.getValue().getFarm_id().asObject());
+        DateColumn.setCellValueFactory(cell -> cell.getValue().getopenDate());
+        TurnOnColumn.setCellValueFactory(cell -> cell.getValue().getturnOn());
 
         table.setItems(data);
             RefreshButton.setOnAction(e -> refreshTable());
@@ -61,13 +59,13 @@ public class Panels extends Application {
         data.clear();
         try (Connection conn = DBConnect.getConnection()) {
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM lista_paneli");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM panels");
             while (rs.next()) {
-                boolean wlaczony = rs.getBoolean("Właczony");
+                boolean wlaczony = rs.getBoolean("status");
                 data.add(new PanelRow(
-                        rs.getInt("id"),
-                        rs.getString("nazwa"),
-                        rs.getDate("dzien_otwarcia").toString(),
+                        rs.getInt("panel_id"),
+                        rs.getInt("farm_id"),
+                        rs.getDate("installation_date").toString(),
                         wlaczony ? "tak" : "nie"
                 ));
             }
@@ -79,7 +77,7 @@ public class Panels extends Application {
         try{
             conn = new DBConnect();
             PanelRow selected = table.getSelectionModel().getSelectedItem();
-            conn.DeleteRowFromTabel(selected.getINTId());
+            conn.DeleteRowFromTabel(selected.getINTId(),"panels");
     }catch(SQLException ex){
             System.out.println( ex.getMessage());
         }
@@ -87,7 +85,7 @@ public class Panels extends Application {
     }
     private void addNewPanel(){
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DodawaniePaneluFXML.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddForm.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             Stage stage = new Stage();
             stage.setTitle("Dodaj panel");
@@ -103,7 +101,7 @@ public class Panels extends Application {
         try{
             conn = new DBConnect();
             PanelRow selected = table.getSelectionModel().getSelectedItem();
-            String setted = selected.getWlaczonyString();
+            String setted = selected.getturnOnString();
             int settedBolean;
             if(setted.equals("tak")){
                 settedBolean = 1;

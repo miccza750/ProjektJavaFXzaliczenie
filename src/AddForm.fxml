@@ -22,12 +22,12 @@
             <Font size="22.0" />
          </font>
       </Text>
-      <Text layoutX="16.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nazwa panelu" wrappingWidth="117.69610595703125">
+      <Text layoutX="16.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID Farmy" wrappingWidth="117.69610595703125">
          <font>
             <Font size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="nameField" layoutX="145.0" layoutY="172.0" />
+      <TextField fx:id="IdFarmField" layoutX="145.0" layoutY="172.0" />
       <DatePicker fx:id="datePicker" layoutX="145.0" layoutY="221.0" prefHeight="25.0" prefWidth="149.0" />
       <Text layoutX="16.0" layoutY="239.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dzień otwarcia" wrappingWidth="117.69610595703125">
          <font>

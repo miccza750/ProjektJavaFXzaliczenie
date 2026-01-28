@@ -4,7 +4,7 @@ import java.util.Random;
 public class DBConnect {
     public static Connection getConnection() throws SQLException {
         Connection conn = null;
-        String url = "jdbc:mysql://localhost:3307/" + "solar_farm" + "i?useSSL=false&serverTimezone=UTC";
+        String url = "jdbc:mysql://localhost:3307/solar_farm";
         String user = "root";
         String password = "";
         conn = DriverManager.getConnection(url, user, password);
@@ -62,20 +62,20 @@ public class DBConnect {
             System.out.println("bląd" + e.getMessage());
         }
     }
-    public void AddRowtoListOfPanels(String name,Date date) throws SQLException {
+    public void AddRowtoListOfPanels(Date date,int farm_id, String tab) throws SQLException {
         try {
             Connection conn = DBConnect.getConnection();
-            String sql = "INSERT INTO lista_paneli (`nazwa`, `dzien_otwarcia`, `Właczony`) " +
-                    "VALUES ('" + name + "','"+date+"', 0)";
+            String sql = "INSERT INTO "+tab+" (`farm_id`,`status`,`installation_date`) " +
+                    "VALUES ('" + farm_id + "',0,'"+date+"')";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.executeUpdate();
 
         }catch (SQLException e){
             System.out.println("bląd" + e.getMessage());        }
     }
-    public void DeleteRowFromTabel(int row) throws SQLException {
+    public void DeleteRowFromTabel(int row, String tab) throws SQLException {
         Connection conn = DBConnect.getConnection();
-        String sql = "DELETE FROM `lista_paneli` WHERE `lista_paneli`.`id` = "+(row)+" ";
+        String sql = "DELETE FROM `"+tab+"` WHERE `panel_id` = "+(row)+" ";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.executeUpdate();
             System.out.println("Usunieto poprawnie wiersz o ID: "+row);
@@ -93,6 +93,14 @@ public class DBConnect {
         }
         catch (SQLException e){
             System.out.println("bład: " + e.getMessage());
+        }
+    }
+    public boolean farmExists(int farmId) throws SQLException {
+        String sql = "SELECT 1 FROM farms WHERE farm_id = "+farmId;
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+            return rs.next();
         }
     }
     }

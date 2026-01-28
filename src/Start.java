@@ -1,16 +1,10 @@
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.sql.SQLException;
 
 public class Start {
         @FXML
@@ -39,14 +33,14 @@ public class Start {
                     DBConnect dbConnect = new DBConnect();
                     dbConnect.getConnection();
                     Stage stage = (Stage) button1.getScene().getWindow();
-                    sceneChange.changeScene(stage, "WykresyPanelFXML.fxml", "Statystyki");
+                    sceneChange.changeScene(stage, "Charts.fxml", "Statystyki");
                 } catch (Exception ex) {
                     showError(ex);
                 }
             });
             buttonPanele.setOnAction(e -> {
                 Stage stage = (Stage) buttonPanele.getScene().getWindow();
-                sceneChange.changeScene(stage,"plik2.fxml","Panele");
+                sceneChange.changeScene(stage, "Tables.fxml","Panele");
                 System.out.println("Przycisk button1 kliknięty!");
             });
         buttonSumylacja.setOnAction(e -> {
