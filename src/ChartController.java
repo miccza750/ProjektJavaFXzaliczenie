@@ -2,12 +2,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 
 import java.sql.*;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,78 +27,89 @@ public class ChartController {
     @FXML
     private DatePicker toDatePicker;
     @FXML
-    private ListView listOfPanels;
-    List<Integer> panelFarmIds = new ArrayList<>();
+    private ComboBox<String> ListOfFarms;
+    ObservableList<String> panelFarmNames = FXCollections.observableArrayList();
+
     @FXML
     public void initialize() {
         try (Connection conn = DBConnect.getConnection()) {
             try (Statement stmt = conn.createStatement()) {
-                try (ResultSet rs = stmt.executeQuery("SELECT id_farmy FROM farmy")) {
+                try (ResultSet rs = stmt.executeQuery("SELECT name FROM farms")) {
+                    //ObservableList<String> farms = FXCollections.observableArrayList();
                     while (rs.next()) {
-                        panelFarmIds.add(rs.getInt("id_farmy"));
+                        panelFarmNames.add(rs.getString("name"));
                     }
-
                 }
-            }catch (SQLException ex) {
-                ex.printStackTrace();}
-            listOfPanels.setItems(FXCollections.observableArrayList(panelFarmIds));
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            ListOfFarms.setItems(panelFarmNames);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        loadChartData(null, null);
         lineChart.setCreateSymbols(false);
         lineChart.setAnimated(false);
+
+        ListOfFarms.valueProperty().addListener((obs, oldVal, newVal) -> filterChart());
         fromDatePicker.valueProperty().addListener((obs, oldVal, newVal) -> filterChart());
         toDatePicker.valueProperty().addListener((obs, oldVal, newVal) -> filterChart());
     }
     private void filterChart() {
         LocalDate from = fromDatePicker.getValue();
         LocalDate to = toDatePicker.getValue();
-        loadChartData(from, to);
+        String name = ListOfFarms.getSelectionModel().getSelectedItem();
+        if(from != null && to != null && name != null) {
+            System.out.println(from + " " + to + " " + name);
+        loadChartData(from, to,name);
+        }
     }
-    private void loadChartData(LocalDate from, LocalDate to) {
+
+    private void loadChartData(LocalDate from, LocalDate to, String name) {
         lineChart.getData().clear();
         String sql =
-                "SELECT ID_Panelu, DATE_FORMAT(godzina,'%H:%i') AS czas, moc " +
-                        " FROM energia_paneli " +
-                        "WHERE Dzien BETWEEN '" + from + "' AND '" + to + "' " +
-                        " ORDER BY ID_Panelu, godzina";
+                "SELECT ep.panel_id,DATE_FORMAT(ep.timestamp, '%H:%i') AS time, ep.power " +
+                        "FROM panel_energy ep " +
+                        "JOIN panels p ON ep.panel_id = p.panel_id " +
+                        "JOIN farms f ON p.farm_id = f.farm_id " +
+                        "WHERE ep.timestamp >= '" + from +
+                        "' AND ep.timestamp < '" + to +
+                        "' AND f.name = ? " +
+                        "ORDER BY ep.panel_id, ep.timestamp;";
+        System.out.println(sql);
+        try (Connection conn = DBConnect.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-
-    try(Connection conn = DBConnect.getConnection();
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql)) {
-            List<XYChart.Series<String, Number>> series = new ArrayList<>();
-            int currentPanelId = -1;
-            LocalTime prevTime = null;
-            XYChart.Series<String, Number> currentSeries = null;
-            while (rs.next()) {
-                int panelId = rs.getInt("ID_Panelu");
-                if (panelId != currentPanelId) {
-                    currentSeries = new XYChart.Series<>();
-                    currentSeries.setName("Panel " + panelId);
-                    series.add(currentSeries);
-                    currentPanelId = panelId;
-                    prevTime = null;
-                }
-                String czas = rs.getString("czas");
-                float moc = rs.getFloat("moc");
-                LocalTime time = LocalTime.parse(czas);
-                if (prevTime!=null){
-                if(Duration.between(prevTime, time).toMinutes() > 1) {
-                    if (!series.contains(currentSeries)) {
-                    currentSeries = new XYChart.Series<>();
-                    currentSeries.setName("Panel " + panelId);
-                    series.add(currentSeries);
-                    }
-                }}
-                prevTime = time;
-                currentSeries.getData().add(new XYChart.Data<>(czas, moc));
+            if (from == null || to == null) {
+                return;
             }
-        lineChart.getData().addAll(series);
 
-        } catch (Exception e) {
+            stmt.setString(1,name);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+
+                List<XYChart.Series<String, Number>> seriesList = new ArrayList<>();
+                int currentPanelId = -1;
+                XYChart.Series<String, Number> currentSeries = null;
+                while (rs.next()) {
+
+                    int panelId = rs.getInt("panel_id");
+                    String czasStr = rs.getString("time");
+                    float moc = rs.getFloat("power");
+
+                    if (panelId != currentPanelId) {
+                        currentSeries = new XYChart.Series<>();
+                        currentSeries.setName("Panel " + panelId);
+                        seriesList.add(currentSeries);
+                        currentPanelId = panelId;
+                    }
+                    currentSeries.getData().add(new XYChart.Data<>(czasStr, moc));
+                }
+
+                lineChart.getData().addAll(seriesList);
+            }
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

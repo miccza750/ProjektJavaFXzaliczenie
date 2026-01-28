@@ -17,7 +17,7 @@
                 <Image url="@icon.png" />
             </image>
         </ImageView>
-        <Text fill="#7099f2" layoutX="99.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #f9d423;" text="Panel menadżer" wrappingWidth="186.13673400878906">
+        <Text fill="#7099f2" layoutX="83.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #f9d423;" text="Panel menadżer" wrappingWidth="186.13673400878906">
             <font>
                 <Font size="11.0" />
             </font>
@@ -34,5 +34,14 @@
       <Button fx:id="AddButton" layoutX="83.0" layoutY="364.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="48.0" text="Dodaj" />
       <Button fx:id="OnOffButton" layoutX="206.0" layoutY="364.0" mnemonicParsing="false" text="Włącz/Wyłącz" />
       <Button fx:id="RefreshButton" layoutX="12.0" layoutY="364.0" mnemonicParsing="false" text="Odświerz" />
+      <Button fx:id="BackButton" layoutX="243.0" layoutY="28.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="42.0">
+          <graphic>
+              <ImageView fitWidth="30" fitHeight="30">
+                  <image>
+                      <Image url="file:src/backIcon.png"/>
+                  </image>
+              </ImageView>
+          </graphic>
+      </Button>
     </children>
 </Pane>
