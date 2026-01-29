@@ -1,3 +1,4 @@
+package main.java.com.ProjektJavaFX;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,6 +30,9 @@ public class TablesController extends Application {
     private Button OnOffButton;
     @FXML
     private Button RefreshButton;
+    @FXML
+    private Button backButton;
+    SceneChange sceneChange = new SceneChange();
     private ObservableList<PanelRow> data;
     public DBConnect conn;
     public static void main(String[] args) {
@@ -42,6 +46,10 @@ public class TablesController extends Application {
 
     @FXML
     public void initialize() throws SQLException, ClassNotFoundException {
+        backButton.setOnAction(e -> {
+            Stage stage = (Stage) backButton.getScene().getWindow();
+            sceneChange.changeScene(stage, "AdminPanel.fxml", "Panel Admina");
+        });
         data = FXCollections.observableArrayList();
         IDColumn.setCellValueFactory(cell -> cell.getValue().getId().asObject());
         IDFarmColumn.setCellValueFactory(cell -> cell.getValue().getFarm_id().asObject());

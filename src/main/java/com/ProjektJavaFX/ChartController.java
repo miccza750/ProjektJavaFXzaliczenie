@@ -1,16 +1,20 @@
+package main.java.com.ProjektJavaFX;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
+import javafx.stage.Stage;
 
 import java.sql.*;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,14 +32,20 @@ public class ChartController {
     private DatePicker toDatePicker;
     @FXML
     private ComboBox<String> ListOfFarms;
+    SceneChange sceneChange = new SceneChange();
+    @FXML
+    private Button backButton;
     ObservableList<String> panelFarmNames = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
+        backButton.setOnAction(e -> {
+            Stage stage = (Stage) backButton.getScene().getWindow();
+            sceneChange.changeScene(stage, "AdminPanel.fxml", "Panel admina");
+        });
         try (Connection conn = DBConnect.getConnection()) {
             try (Statement stmt = conn.createStatement()) {
                 try (ResultSet rs = stmt.executeQuery("SELECT name FROM farms")) {
-                    //ObservableList<String> farms = FXCollections.observableArrayList();
                     while (rs.next()) {
                         panelFarmNames.add(rs.getString("name"));
                     }
@@ -68,14 +78,11 @@ public class ChartController {
     private void loadChartData(LocalDate from, LocalDate to, String name) {
         lineChart.getData().clear();
         String sql =
-                "SELECT ep.panel_id,DATE_FORMAT(ep.timestamp, '%H:%i') AS time, ep.power " +
-                        "FROM panel_energy ep " +
-                        "JOIN panels p ON ep.panel_id = p.panel_id " +
+                "SELECT ep.panel_id, ep.timestamp, ep.power " +
+                        "FROM panel_energy ep JOIN panels p ON ep.panel_id = p.panel_id " +
                         "JOIN farms f ON p.farm_id = f.farm_id " +
-                        "WHERE ep.timestamp >= '" + from +
-                        "' AND ep.timestamp < '" + to +
-                        "' AND f.name = ? " +
-                        "ORDER BY ep.panel_id, ep.timestamp;";
+                        "WHERE ep.timestamp >= ? AND ep.timestamp < DATE_ADD(?, INTERVAL 1 DAY) " +
+                        "AND f.name = ? ORDER BY ep.panel_id, ep.timestamp";
         System.out.println(sql);
         try (Connection conn = DBConnect.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -83,8 +90,9 @@ public class ChartController {
             if (from == null || to == null) {
                 return;
             }
-
-            stmt.setString(1,name);
+            stmt.setDate(1, java.sql.Date.valueOf(from));
+            stmt.setDate(2, java.sql.Date.valueOf(to));
+            stmt.setString(3,name);
 
             try (ResultSet rs = stmt.executeQuery()) {
 
@@ -94,8 +102,9 @@ public class ChartController {
                 while (rs.next()) {
 
                     int panelId = rs.getInt("panel_id");
-                    String czasStr = rs.getString("time");
-                    float moc = rs.getFloat("power");
+                    Timestamp ts = rs.getTimestamp("timestamp");
+                    float power = rs.getFloat("power");
+                    String label = ts.toLocalDateTime().format(DateTimeFormatter.ofPattern("dd-MM HH:mm"));
 
                     if (panelId != currentPanelId) {
                         currentSeries = new XYChart.Series<>();
@@ -103,7 +112,7 @@ public class ChartController {
                         seriesList.add(currentSeries);
                         currentPanelId = panelId;
                     }
-                    currentSeries.getData().add(new XYChart.Data<>(czasStr, moc));
+                    currentSeries.getData().add(new XYChart.Data<>(label, power));
                 }
 
                 lineChart.getData().addAll(seriesList);

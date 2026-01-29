@@ -1,3 +1,4 @@
+package main.java.com.ProjektJavaFX;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
@@ -48,7 +49,9 @@ public class LoginFormConroller {
                             String storedHash = rs.getString("password");
                             if (pass.equals(storedHash)) {
                                 Stage stage = (Stage) buttonLogin.getScene().getWindow();
-                                sceneChange.changeScene(stage, "AdminPanel.fxml", "User Panel");
+                                sceneChange.changeScene(stage, "UserPanel.fxml", "User Panel");
+                                Session.getInstance().setName(name);
+
                             } else {
                                 showError("Niepoprawne hasło!");
                             }

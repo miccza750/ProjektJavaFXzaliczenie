@@ -1,3 +1,4 @@
+package main.java.com.ProjektJavaFX;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -9,7 +10,8 @@ import java.io.IOException;
 public class SceneChange {
     public void changeScene(Stage stage, String fxmlFile, String title) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource(fxmlFile));
+            String fxml = "/main/resources/"+fxmlFile;
+            Parent root = FXMLLoader.load(getClass().getResource(fxml));
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.setTitle(title);

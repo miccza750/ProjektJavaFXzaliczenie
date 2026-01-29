@@ -1,3 +1,4 @@
+package main.java.com.ProjektJavaFX;
 import javafx.beans.property.*;
 
 public class PanelRow {

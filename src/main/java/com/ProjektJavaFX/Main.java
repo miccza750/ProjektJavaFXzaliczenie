@@ -1,3 +1,4 @@
+package main.java.com.ProjektJavaFX;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,10 +15,10 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AdminPanel.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/LoginForm.fxml"));
         Scene scene = new Scene(fxmlLoader.load(),311,423);
         stage.setScene(scene);
-        stage.setTitle("r");
+        stage.setTitle("login");
         stage.show();
     }
 }
